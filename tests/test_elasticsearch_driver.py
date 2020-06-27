@@ -20,15 +20,16 @@ INDEX_NAME = 'test_environment_{}'.format(hashlib.md5(os.urandom(128)).hexdigest
 DOC_TYPE = 'image'
 MAPPINGS = {
   "mappings": {
-    DOC_TYPE: {
-      "dynamic": True,
-      "properties": {
-        "metadata": {
-            "type": "object",
-            "dynamic": True,
+    "properties": {
+      DOC_TYPE: {
+        "type": "nested",
+        "properties": {
+          "metadata": {
+            "type": "nested",
             "properties": {
-                "tenant_id": { "type": "keyword" }
+              "tenant_id": { "type": "keyword" }
             }
+          }
         }
       }
     }
