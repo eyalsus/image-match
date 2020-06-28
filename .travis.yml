@@ -21,6 +21,7 @@ before_install:
 install:
     - pip install --upgrade pip codecov
     - pip install codecov
+    - pip install --upgrade pytest
     - pip install -e .[test]
 
 script: pytest --cov=image_match && codecov
