@@ -193,15 +193,15 @@ def test_lookup_with_filter_by_metadata(ses):
     )
     ses.add_image('test2.jpg', metadata=metadata2, refresh_after=True)
 
-    r = ses.search_image('test1.jpg', pre_filter={"term": {"metadata.tenant_id": "foo"}})
+    r = ses.search_image('test1.jpg', pre_filter={"term": {'{}.metadata.tenant_id'.format(DOC_TYPE): "foo"}})
     assert len(r) == 1
     assert r[0]['metadata'] == metadata
 
-    r = ses.search_image('test1.jpg', pre_filter={"term": {"metadata.tenant_id": "bar-2"}})
+    r = ses.search_image('test1.jpg', pre_filter={"term": {'{}.metadata.tenant_id'.format(DOC_TYPE): "bar-2"}})
     assert len(r) == 1
     assert r[0]['metadata'] == metadata2
 
-    r = ses.search_image('test1.jpg', pre_filter={"term": {"metadata.tenant_id": "bar-3"}})
+    r = ses.search_image('test1.jpg', pre_filter={"term": {'{}.metadata.tenant_id'.format(DOC_TYPE): "bar-3"}})
     assert len(r) == 0
 
 
