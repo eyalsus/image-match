@@ -50,7 +50,7 @@ def setup_index(request, index_name):
     try:
         es.indices.create(index=index_name, body=MAPPINGS)
     except RequestError as e:
-        if e.error == u'index_already_exists_exception':
+        if e.error == u'resource_already_exists_exception':
             es.indices.delete(index_name)
         else:
             raise
