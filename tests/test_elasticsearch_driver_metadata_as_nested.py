@@ -19,21 +19,23 @@ urlretrieve(test_img_url2, 'test2.jpg')
 INDEX_NAME = 'test_environment_{}'.format(hashlib.md5(os.urandom(128)).hexdigest()[:12])
 DOC_TYPE = 'image'
 MAPPINGS = {
-  "mappings": {
-    DOC_TYPE: {
-      "dynamic": True,
-      "properties": {
-        "metadata": {
-            "type": "nested",
-            "dynamic": True,
-            "properties": {
-                "tenant_id": { "type": "keyword" },
-                "project_id": { "type": "keyword" }
+    "mappings": {
+        "properties": {
+            DOC_TYPE: {
+                "properties": {
+                    "path": {
+                        "type": "keyword"
+                    },
+                    "metadata": {
+                        "properties": {
+                            "tenant_id": { "type": "keyword" },
+                            "project_id": { "type": "keyword" }
+                        }
+                    }
+                }
             }
         }
-      }
     }
-  }
 }
 
 
@@ -122,16 +124,7 @@ def _metadata(tenant_id, project_id):
     )
 
 def _nested_filter(tenant_id, project_id):
-    return {
-        "nested" : {
-            "path" : "metadata",
-            "query" : {
-                "bool" : {
-                    "must" : [
-                        {"term": {"metadata.tenant_id": tenant_id}},
-                        {"term": {"metadata.project_id": project_id}}
-                    ]
-                }
-             }
-        }
-    }
+    return [
+        {"term": {"image.metadata.tenant_id": tenant_id}},
+        {"term": {"image.metadata.project_id": project_id}}
+    ]
