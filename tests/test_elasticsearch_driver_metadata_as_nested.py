@@ -124,16 +124,7 @@ def _metadata(tenant_id, project_id):
     )
 
 def _nested_filter(tenant_id, project_id):
-    return {
-        "nested" : {
-            "path" : "metadata",
-            "query" : {
-                "bool" : {
-                    "must" : [
-                        {"term": {"metadata.tenant_id": tenant_id}},
-                        {"term": {"metadata.project_id": project_id}}
-                    ]
-                }
-             }
-        }
-    }
+    return [
+        {"term": {"image.metadata.tenant_id": tenant_id}},
+        {"term": {"image.metadata.project_id": project_id}}
+    ]
