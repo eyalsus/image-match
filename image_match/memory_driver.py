@@ -42,11 +42,10 @@ class SignatureMemory(SignatureDatabaseBase):
         super(SignatureMemory, self).__init__(*args, **kwargs)
 
     def search_single_record(self, rec, pre_filter=None):
-        path = rec.pop('path')
+        _ = rec.pop('path')
         signature = rec.pop('signature')
-        metadata = ''
         if 'metadata' in rec:
-            metadata = rec.pop('metadata')
+            _ = rec.pop('metadata')
         
         hash_key = self._md5sum(str(rec.keys()))
         if hash_key not in self.knowledge_base:
