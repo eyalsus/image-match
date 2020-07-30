@@ -3,7 +3,7 @@ import numpy as np
 from .signature_database_base import SignatureDatabaseBase
 from .signature_database_base import normalized_distance
 from datetime import datetime
-
+# import os
 
 class SignatureMemory(SignatureDatabaseBase):
     """Elasticsearch driver for image-match
@@ -78,6 +78,12 @@ class SignatureMemory(SignatureDatabaseBase):
         if hash_key not in self.knowledge_base:
             self.knowledge_base[hash_key] = [data]
         else:
+            for kb_sig in self.knowledge_base[hash_key]:
+                if kb_sig['signature'] == data['signature']:
+                    # print(f"signature already exists: {data['metadata']}")
+                    # os.remove(path)
+                    return
+            # print(f"adding signature {data['metadata']}")
             self.knowledge_base[hash_key].append(data)
 
 
